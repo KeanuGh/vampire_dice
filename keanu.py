@@ -34,14 +34,20 @@ def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10, plot: bool = N
         print(f'{key}: {value}')
 
     if plot:
-        plt.bar(counts_proba.keys(), counts_proba.values())
+        bins = list(counts_proba.keys())
+        plt.bar(counts_proba.keys(), counts_proba.values(), color='r', edgecolor='k')
+        plt.xticks(bins)
+        plt.xlabel("Success")
+        plt.ylabel("%")
+        plt.annotate(f"diff = {diff}\nmean = {np.mean(successes):.2f}\nstd = {np.std(successes):.2f}",
+                     xy=[.75, .75], xycoords='figure fraction')
         plt.show()
 
 
 if __name__ == '__main__':
-    for n in range(1):
+    for diff in range(1,10):
         odds(n_dice=3,
              n_iter=1000000,
-             diff=7,
+             diff=diff,
              plot=True
              )
