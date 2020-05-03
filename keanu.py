@@ -3,9 +3,10 @@ from collections import Counter
 import matplotlib.pyplot as plt
 
 
-def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10) -> None:
+def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10, plot: bool = None) -> None:
     """
     Calculates and displays probabilities of successes for n_dice
+    :param plot:
     :param n_dice: number of dice to roll
     :param n_iter: number of iterations
     :param diff: roll difficulty
@@ -31,12 +32,16 @@ def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10) -> None:
     counts_proba = {k: 100 * v / n_iter for k, v in counts.items()}
     for key, value in sorted(counts_proba.items()):
         print(f'{key}: {value}')
-    plt.bar(counts_proba.keys(), counts_proba.values())
-    plt.show()
+
+    if plot:
+        plt.bar(counts_proba.keys(), counts_proba.values())
+        plt.show()
 
 
 if __name__ == '__main__':
     for n in range(1):
         odds(n_dice=3,
              n_iter=1000000,
-             diff=7)
+             diff=7,
+             plot=True
+             )
