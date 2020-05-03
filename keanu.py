@@ -21,20 +21,20 @@ def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10) -> None:
                 success += -1
             elif dice_n == die_size - 1:
                 success += 2
-            elif dice_n >= diff:
+            elif dice_n >= diff - 1:
                 success += 1
 
         successes.append(success)
 
     counts = Counter(successes)
-    counts_proba = {k: v / n_iter for k, v in counts.items()}
+    counts_proba = {k: 100 * v / n_iter for k, v in counts.items()}
     for key, value in sorted(counts_proba.items()):
         print(f'{key}: {value}')
 
 
 if __name__ == '__main__':
-    for n in range(1):
-        odds(n_dice=18,
+    for n in range(10):
+        odds(n_dice=3,
              n_iter=1000000,
              diff=7)
         print('\n')
