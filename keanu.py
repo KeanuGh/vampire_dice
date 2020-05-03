@@ -2,7 +2,15 @@ import numpy as np
 from collections import Counter
 
 
-def odds(n_dice, n_iter, diff, die_size=10):
+def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10) -> None:
+    """
+    Calculates and displays probabilities of successes for n_dice
+    :param n_dice: number of dice to roll
+    :param n_iter: number of iterations
+    :param diff: roll difficulty
+    :param die_size: how many sides does your dice have
+    :return: None
+    """
     successes = []
     for i in range(n_iter):
         success = 0
