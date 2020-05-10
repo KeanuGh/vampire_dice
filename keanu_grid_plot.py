@@ -5,7 +5,7 @@ from collections import Counter
 
 def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10):
     """
-    Calculates and displays probabilities of successes for n_dice
+    Calculates and displays probabilities of successes for n_dice.
     if you roll:
      1: -1 success
      10 (max): 2 success
