@@ -1,6 +1,6 @@
 import numpy as np
-from collections import Counter
 import matplotlib.pyplot as plt
+from collections import Counter
 
 
 def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10):
@@ -10,38 +10,38 @@ def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10):
      1: -1 success
      10 (max): 2 success
      >=diff: 1 success
-    :param plot:
     :param n_dice: number of dice to roll
     :param n_iter: number of iterations
     :param diff: roll difficulty
     :param die_size: how many sides does your dice have
-    :return: None
+    :return: lists of sucess counts and their probabilities, mean, standard deviation
     """
     successes = []
     for i in range(n_iter):
         success = 0
-
-        for d in range(n_dice):
-            dice_n = np.random.randint(die_size)
-            if dice_n == 0:
+        # For each dice, roll and calculate success
+        for die in range(n_dice):
+            roll = np.random.randint(die_size) + 1  # because dice go 1 to n not 0 to n-1
+            if roll == 1:
                 success += -1
-            elif dice_n == die_size - 1:
+            elif roll == die_size:
                 success += 2
-            elif dice_n >= diff - 1:
+            elif roll >= diff:
                 success += 1
 
         successes.append(success)
+
     mean = np.mean(successes)
     std = np.std(successes)
 
     counts = Counter(successes)
     counts_proba = {k: 100 * v / n_iter for k, v in counts.items()}
 
-    return counts_proba.keys(), counts_proba.values(), mean, std
+    return list(counts_proba.keys()), list(counts_proba.values()), mean, std
 
 
 def main():
-    # range of dice and difference (inclusive)
+    # range of dice and difficulty (inclusive)
     n_dice_range = (3, 6)
     n_diff_range = (4, 8)
 
@@ -58,7 +58,7 @@ def main():
             axs[i, j].bar(x, y, color='r', edgecolor='k')
             axs[i, j].set_xlabel("Success")
             axs[i, j].set_ylabel("%")
-            axs[i, j].set_xticks(list(x))
+            axs[i, j].set_xticks(x)
             axs[i, j].text(.75, .75,
                            f"n_dice = {n_dice}\ndiff = {diff}\n"
                            f"mean = {m:.2f}\nstd = {s:.2f}",

@@ -3,10 +3,14 @@ from collections import Counter
 import matplotlib.pyplot as plt
 
 
-def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10, plot: bool = None) -> None:
+def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10, plot: bool = False) -> None:
     """
     Calculates and displays probabilities of successes for n_dice
-    :param plot:
+    if you roll:
+     1: -1 success
+     die_size (default 10): 2 success
+     >=diff: 1 success
+    :param plot: if True displays bar plot of possible outcomes and their probabilities
     :param n_dice: number of dice to roll
     :param n_iter: number of iterations
     :param diff: roll difficulty
@@ -16,27 +20,26 @@ def odds(n_dice: int, n_iter: int, diff: int, die_size: int = 10, plot: bool = N
     successes = []
     for i in range(n_iter):
         success = 0
-
-        for d in range(n_dice):
-            dice_n = np.random.randint(die_size)
-            if dice_n == 0:
+        # For each dice, roll and calculate success
+        for die in range(n_dice):
+            roll = np.random.randint(die_size) + 1  # because dice go 1 to n not 0 to n-1
+            if roll == 1:
                 success += -1
-            elif dice_n == die_size - 1:
+            elif roll == die_size:
                 success += 2
-            elif dice_n >= diff - 1:
+            elif roll >= diff:
                 success += 1
 
         successes.append(success)
 
     counts = Counter(successes)
     counts_proba = {k: 100 * v / n_iter for k, v in counts.items()}
-    for key, value in sorted(counts_proba.items()):
-        print(f'{key}: {value}')
+    for score, proba in sorted(counts_proba.items()):
+        print(f'{score}: {proba}')
 
     if plot:
-        bins = list(counts_proba.keys())
         plt.bar(counts_proba.keys(), counts_proba.values(), color='r', edgecolor='k')
-        plt.xticks(bins)
+        plt.xticks(list(counts_proba.keys()))
         plt.xlabel("Success")
         plt.ylabel("%")
         plt.annotate(f"diff = {diff}\nmean = {np.mean(successes):.2f}\nstd = {np.std(successes):.2f}",
